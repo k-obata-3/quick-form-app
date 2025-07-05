@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: quick-form-app
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=quick-form
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
+
