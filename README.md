@@ -1,8 +1,6 @@
 
 
 
-
-
 https://zenn.dev/mostlove/articles/c9e6f1aa45ea09
 
 ## create next app project
