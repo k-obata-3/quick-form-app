@@ -1,14 +1,9 @@
-// app/api/forms/[id]/route.ts
-import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const formId = parseInt(params?.id);
+export async function GET(_: Request, { params }: { params: { id: string } }) {
   const form = await prisma.form.findUnique({
-    where: { id: formId },
+    where: { id: Number(params.id) },
     include: {
       questions: {
         include: { options: true },
@@ -17,36 +12,28 @@ export async function GET(
     },
   });
 
-  if (!form) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  if (!form) {
+    return NextResponse.json({ error: 'フォームが見つかりません' }, { status: 404 });
+  }
+
   return NextResponse.json(form);
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const formId = parseInt(params.id);
-  const data = await req.json();
+export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+  const id = Number(params.id);
 
-  const updated = await prisma.form.update({
-    where: { id: formId },
-    data: {
-      title: data.title,
-      description: data.description,
-    },
+  // 質問に紐づく選択肢削除
+  await prisma.option.deleteMany({
+    where: { question: { formId: Number(id) } }
+  });
+  // フォームに紐づく質問削除
+  await prisma.question.deleteMany({
+    where: { formId: Number(id) }
+  });
+  // フォーム削除
+  await prisma.form.deleteMany({
+    where: { id },
   });
 
-  return NextResponse.json(updated);
-}
-
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const formId = parseInt(params.id);
-  await prisma.form.delete({
-    where: { id: formId },
-  });
-
-  return new NextResponse(null, { status: 204 });
+  return NextResponse.json({ success: true });
 }

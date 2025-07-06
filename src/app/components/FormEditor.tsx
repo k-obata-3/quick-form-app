@@ -43,21 +43,27 @@ export default function FormEditor() {
   }, [id]);
 
   const handleSave = async () => {
-    const cleanedQuestions = questions.map((q) => ({
-      id: q.id,
+    const cleanedQuestions = questions.map((q, index) => ({
       label: q.label.trim(),
       type: q.type,
-      options: q.type === 'text' ? [] : (q.options || []).map((opt) => opt.text.trim()).filter(Boolean),
+      position: index + 1,
+      options: q.type === 'text' ? [] : (q.options || []).map((opt, index) => {
+        return {
+          text: opt.text.trim(),
+          position: index + 1,
+        }
+      }).filter(Boolean),
     }));
 
     const payload = {
+      id: id ?? null,
       title: title.trim(),
       description: description?.trim().length ? description : null,
       questions: cleanedQuestions,
     };
 
-    const res = await fetch(id ? `/api/forms/${id}` : '/api/forms', {
-      method: id ? 'PUT' : 'POST',
+    const res = await fetch('/api/forms', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import ConfirmModal from '@/app/components/ConfirmModal';
 
 type FormItem = {
   id: number;
@@ -12,18 +13,37 @@ type FormItem = {
 };
 
 export default function FormListPage() {
+  const router = useRouter();
   const [forms, setForms] = useState<FormItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const [selectedForm, setSelectedForm] = useState<FormItem | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    getForms();
+  }, []);
+
+  const handleDeleteConfirm = async() => {
+    if (!selectedForm) return;
+
+    const res = await fetch(`/api/forms/${selectedForm.id}`, {
+      method: 'DELETE',
+    });
+
+    if (res.ok) {
+      setShowModal(false);
+      getForms();
+    }
+  };
+
+  const getForms = async() => {
     fetch('/api/forms')
       .then((res) => res.json())
       .then((data) => {
         setForms(data);
         setLoading(false);
       });
-  }, []);
+  }
 
   if (loading) return <Container>読み込み中...</Container>;
 
@@ -48,20 +68,9 @@ export default function FormListPage() {
                     作成日: {new Date(form.createdAt).toLocaleDateString()}
                   </Card.Text>
                   <div className="d-flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline-primary"
-                      onClick={() => router.push(`/forms/${form.id}/edit`)}
-                    >
-                      編集
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline-secondary"
-                      onClick={() => router.push(`/forms/${form.id}/preview`)}
-                    >
-                      プレビュー
-                    </Button>
+                    <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
+                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
+                    <Button size="sm" variant="outline-danger" onClick={() => { setSelectedForm(form), setShowModal(true) }}>削除</Button>
                   </div>
                 </Card.Body>
               </Card>
@@ -69,6 +78,8 @@ export default function FormListPage() {
           ))
         )}
       </Row>
+
+      <ConfirmModal show={showModal} onClose={() => setShowModal(false)} onConfirm={handleDeleteConfirm} itemName={selectedForm?.title} />
     </Container>
   );
 }

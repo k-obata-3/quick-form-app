@@ -12,8 +12,10 @@ type Question = {
 };
 
 type FormType = {
+  id: string;
   title: string;
   description: string;
+  isPublic: boolean;
   questions: Question[];
 };
 
@@ -40,7 +42,7 @@ export default function FormPreviewPage() {
     <Container className="">
       <h2 className="mb-3">{form.title}</h2>
       <p className="text-muted">{form.description}</p>
-
+      <a className="text-muted" href={`${new URL(window.location.href).origin}/public/${form.id}`} target="_blank">回答ページ</a>
       <Form>
         {form.questions.map((q) => (
           <Card key={q.id} className="my-4">
