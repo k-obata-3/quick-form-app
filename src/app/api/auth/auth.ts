@@ -1,7 +1,7 @@
+import { prisma } from '../../../../prisma/prisma';
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
-import { prisma } from "@/lib/prisma";
 
 interface Token extends JWT {
   id?: string,
