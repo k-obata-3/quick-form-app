@@ -1,9 +1,13 @@
 'use client';
 
 import { Button, Card, Form, Spinner } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
+import { CSS } from '@dnd-kit/utilities';
+import { BsFillGrid3X2GapFill, BsPlusLg } from "react-icons/bs";
 export type Question = {
   id: number;
   label: string;
@@ -26,6 +30,20 @@ export default function FormEditor() {
   const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState<boolean>(!!id);
+  const [validated, setValidated] = useState(false);
+
+  // ドラッグアンドドロップ用
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sensors = useSensors(useSensor(PointerSensor));
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      const oldIndex = questions.findIndex((q) => q.id === active.id);
+      const newIndex = questions.findIndex((q) => q.id === over?.id);
+      const updated = arrayMove(questions, oldIndex, newIndex);
+      setQuestions(updated);
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -42,7 +60,15 @@ export default function FormEditor() {
     fetchForm();
   }, [id]);
 
-  const handleSave = async () => {
+  const handleSave = async (event: any) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
     const cleanedQuestions = questions.map((q, index) => ({
       label: q.label.trim(),
       type: q.type,
@@ -118,10 +144,10 @@ export default function FormEditor() {
   if (loading) return <Spinner animation="border" variant="primary" />;
 
   return (
-    <div>
-      <Form.Group className="mb-3">
+    <Form noValidate validated={validated} onSubmit={handleSave}>
+      <Form.Group className="mb-3" >
         <Form.Label>フォームタイトル</Form.Label>
-        <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} />
+        <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} required />
       </Form.Group>
 
       <Form.Group className="mb-4">
@@ -132,38 +158,33 @@ export default function FormEditor() {
         />
       </Form.Group>
 
-      {questions.map((q, index) => (
-        <SortableQuestionCard
-          key={q.id}
-          question={q}
-          onLabelChange={(label) => updateLabel(q.id, label)}
-          onTypeChange={(type) => updateType(q.id, type)}
-          onOptionsChange={(options) => updateOptions(q.id, options)}
-          onMoveUp={() => moveQuestion(index, 'up')}
-          onMoveDown={() => moveQuestion(index, 'down')}
-        />
-      ))}
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd} modifiers={[restrictToParentElement]}>
+        <SortableContext items={questions.map((q) => q.id)} strategy={verticalListSortingStrategy}>
+          <div ref={containerRef} style={{ overflow: 'hidden' }}>
+            {questions.map((q, index) => (
+              <SortableQuestionCard
+                key={q.id}
+                question={q}
+                onLabelChange={(label) => updateLabel(q.id, label)}
+                onTypeChange={(type) => updateType(q.id, type)}
+                onOptionsChange={(options) => updateOptions(q.id, options)}
+                onMoveUp={() => moveQuestion(index, 'up')}
+                onMoveDown={() => moveQuestion(index, 'down')}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
 
       <div className="d-flex gap-3 mt-4">
-        <Button variant="outline-primary" onClick={addQuestion}>
-          ＋ 質問を追加
-        </Button>
-        <Button variant="primary" onClick={handleSave}>
-          保存する
-        </Button>
+        <Button variant="outline-primary" onClick={addQuestion}><BsPlusLg />質問を追加</Button>
+        <Button variant="primary" type="submit">保存する</Button>
       </div>
-    </div>
+    </Form>
   );
 }
 
-function SortableQuestionCard({
-  question,
-  onLabelChange,
-  onTypeChange,
-  onOptionsChange,
-  onMoveUp,
-  onMoveDown,
-}: {
+function SortableQuestionCard({ question, onLabelChange, onTypeChange, onOptionsChange }: {
   question: Question;
   onLabelChange: (label: string) => void;
   onTypeChange: (type: Question['type']) => void;
@@ -171,6 +192,22 @@ function SortableQuestionCard({
   onMoveUp: () => void;
   onMoveDown: () => void;
 }) {
+
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: question.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    marginBottom: '16px',
+  };
+
+  const dragHandleStyle = {
+    cursor: 'grab',
+    color: '#C0C0C0'
+  }
+
   const handleOptionLabelChange = (index: number, value: string) => {
     const newOptions = [...(question.options || [])];
     newOptions[index] = {
@@ -196,26 +233,21 @@ function SortableQuestionCard({
   };
 
   return (
-    <Card className="mb-3">
+    <Card ref={setNodeRef} style={style}>
+      <div className="text-center">
+        {/* DnDハンドル：ここにだけ listener を付与 */}
+        <h4 {...attributes} {...listeners} style={dragHandleStyle}><BsFillGrid3X2GapFill /></h4>
+      </div>
       <Card.Body>
         <div className="d-flex justify-content-between align-items-start">
           <div className="flex-grow-1">
             <Form.Group className="mb-2">
-              <Form.Label>質問</Form.Label>
-              <Form.Control
-                type="text"
-                value={question.label}
-                placeholder="質問"
-                onChange={(e) => onLabelChange(e.target.value)}
-              />
+              <Form.Control value={question.label} placeholder="質問" onChange={(e) => onLabelChange(e.target.value)} required />
             </Form.Group>
 
             <Form.Group className="mb-2">
               <Form.Label>タイプ</Form.Label>
-              <Form.Select
-                value={question.type}
-                onChange={(e) => onTypeChange(e.target.value as Question['type'])}
-              >
+              <Form.Select value={question.type} onChange={(e) => onTypeChange(e.target.value as Question['type'])}>
                 <option value="text">テキスト</option>
                 <option value="radio">単一選択（ラジオ）</option>
                 <option value="checkbox">複数選択（チェックボックス）</option>
@@ -224,25 +256,15 @@ function SortableQuestionCard({
 
             {(question.type === 'radio' || question.type === 'checkbox') && (
               <div>
-                <Form.Label>選択肢</Form.Label>
+                <Form.Label hidden={!question.options?.length}>選択肢</Form.Label>
                 {(question.options || []).map((opt, i) => (
                   <div key={i} className="d-flex gap-2 align-items-center mb-2">
-                    <Form.Control
-                      value={opt.text}
-                      onChange={(e) => handleOptionLabelChange(i, e.target.value)}
-                      placeholder="新しい選択肢"
-                    />
+                    <Form.Control value={opt.text} onChange={(e) => handleOptionLabelChange(i, e.target.value)} placeholder="新しい選択肢" />
                   </div>
                 ))}
-                <Button size="sm" variant="outline-secondary" onClick={handleAddOption} className="mt-2">
-                  ＋ 選択肢を追加
-                </Button>
+                <Button size="sm" variant="outline-secondary" onClick={handleAddOption} className="mt-2"><BsPlusLg />選択肢を追加</Button>
               </div>
             )}
-          </div>
-          <div className="ms-3 mt-2">
-            <Button size="sm" variant="light" onClick={onMoveUp} className="mb-1">↑</Button>
-            <Button size="sm" variant="light" onClick={onMoveDown}>↓</Button>
           </div>
         </div>
       </Card.Body>

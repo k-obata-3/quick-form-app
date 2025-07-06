@@ -45,6 +45,5 @@ npm install next-auth
 
 ## D＆D対応のためのライブラリ install
 ```
-npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
-※使ってないため不要
+npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifiers
 ```
