@@ -30,7 +30,6 @@ export default function LoginPage() {
         password,
       }).then(res => {
         if (res?.error) {
-          // console.log(res.error)
           setError('入力内容をご確認ください。');
         } else {
           setUsername('');

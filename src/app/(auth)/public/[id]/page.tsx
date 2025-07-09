@@ -3,19 +3,31 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Spinner, Container, Card, Form, Button, Alert } from 'react-bootstrap';
+import Loading from '@/app/components/Loading';
 
 type Question = {
   id: string;
   label: string;
   type: 'text' | 'radio' | 'checkbox';
-  options?: { text: string }[];
+  options?: Option[];
 };
+
+type Option = {
+  id: string,
+  text: string
+}
+
+type Answer = {
+  questionId: string;
+  optionId: string | null;
+  value: string;
+}
 
 export default function PublicFormPage() {
   const { id } = useParams();
   const [form, setForm] = useState<{ title: string; description: string; questions: Question[] } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [values, setValues] = useState<Record<string, string | string[]>>({});
+  const [values, setValues] = useState<Answer[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,21 +43,21 @@ export default function PublicFormPage() {
     load();
   }, [id]);
 
-  const handleChange = (questionId: string, value: string | string[]) => {
-    setValues((prev) => ({ ...prev, [questionId]: value }));
+  const handleChange = (e: any, type: string, questionId: string, optionId: string | null) => {
+    const key: string = type === 'checkbox' ? `${questionId}${optionId}` : `${questionId}`;
+    const item: Answer = {
+      questionId: questionId,
+      optionId: e.target.checked ? optionId : null,
+      value: e.target.checked || type === 'text' ? e.target.value : null,
+    }
+
+    setValues((prev) => ({ ...prev, [key]: item }))
   };
 
   const handleSubmit = async () => {
     if (!form) return;
 
-    const items = form.questions.map((q) => {
-      const val = values[q.id];
-      return {
-        questionId: q.id,
-        value: Array.isArray(val) ? val.join(',') : val || '',
-      };
-    });
-
+    const items = Object.values(values).filter(val => val.value?.trim());
     const res = await fetch(`/api/response/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -59,7 +71,9 @@ export default function PublicFormPage() {
     }
   };
 
-  if (loading) return <Spinner animation="border" />;
+  if (loading){
+    return <Loading />
+  }
 
   if (!form) {
     return (
@@ -80,42 +94,38 @@ export default function PublicFormPage() {
         <p className="text-muted">{form.description}</p>
 
         <Form>
-          {form.questions.map((q) => (
+          {form.questions.map((q: Question) => (
             <Form.Group key={q.id} className="mb-4">
-              <Form.Label>{q.label}</Form.Label>
+              <Form.Label style={{width: "100%"}}>{q.label}</Form.Label>
               {q.type === 'text' && (
                 <Form.Control
                   type="text"
-                  value={values[q.id] || ''}
-                  onChange={(e) => handleChange(q.id, e.target.value)}
+                  value={values[Number(q.id)]?.value || ''}
+                  onChange={(e) => handleChange(e, q.type, q.id, null)}
                 />
               )}
               {q.type === 'radio' &&
-                q.options?.map((opt, idx) => (
+                q.options?.map((opt: Option, idx: number) => (
                   <Form.Check
                     key={idx}
                     type="radio"
-                    name={q.id}
+                    name={opt.id}
                     label={opt.text}
-                    checked={values[q.id] === opt.text}
-                    onChange={() => handleChange(q.id, opt.text)}
+                    value={opt.text}
+                    checked={values[Number(q.id)]?.optionId === opt.id ? true : false}
+                    onChange={(e) => handleChange(e, q.type, q.id, opt.id)}
                   />
                 ))}
               {q.type === 'checkbox' &&
-                q.options?.map((opt, idx) => (
+                q.options?.map((opt: any, idx: number) => (
                   <Form.Check
                     key={idx}
                     type="checkbox"
-                    name={`${q.id}-${idx}`}
+                    name={opt.id}
                     label={opt.text}
-                    checked={(values[q.id] as string[] | undefined)?.includes(opt.text) || false}
-                    onChange={(e) => {
-                      const prev = (values[q.id] as string[] | undefined) || [];
-                      const next = e.target.checked
-                        ? [...prev, opt.text]
-                        : prev.filter((v) => v !== opt.text);
-                      handleChange(q.id, next);
-                    }}
+                    value={opt.text}
+                    checked={values[Number(`${q.id}${opt.id}`)]?.optionId === opt.id ? true : false}
+                    onChange={(e) => handleChange(e, q.type, q.id, opt.id)}
                   />
                 ))}
             </Form.Group>

@@ -18,8 +18,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         formId,
         userId,
         answers: {
-          create: body.items.map((item: { questionId: string; value: string }) => ({
+          create: body.items.map((item: { questionId: string; optionId: string; value: string }) => ({
             questionId: item.questionId,
+            optionId: item.optionId,
             text: item.value,
           })),
         },

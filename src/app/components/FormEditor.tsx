@@ -8,6 +8,7 @@ import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } 
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 import { BsFillGrid3X2GapFill, BsPlusLg } from "react-icons/bs";
+import Loading from './Loading';
 export type Question = {
   id: number;
   label: string;
@@ -98,7 +99,6 @@ export default function FormEditor() {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("更新データ:", data);
       router.push(`/forms/${data.id}/preview`);
     }
   };
@@ -141,7 +141,9 @@ export default function FormEditor() {
     );
   };
 
-  if (loading) return <Spinner animation="border" variant="primary" />;
+  if (loading){
+    return <Loading />
+  }
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSave}>
@@ -259,7 +261,7 @@ function SortableQuestionCard({ question, onLabelChange, onTypeChange, onOptions
                 <Form.Label hidden={!question.options?.length}>選択肢</Form.Label>
                 {(question.options || []).map((opt, i) => (
                   <div key={i} className="d-flex gap-2 align-items-center mb-2">
-                    <Form.Control value={opt.text} onChange={(e) => handleOptionLabelChange(i, e.target.value)} placeholder="新しい選択肢" />
+                    <Form.Control value={opt.text} onChange={(e) => handleOptionLabelChange(i, e.target.value)} placeholder="新しい選択肢" required />
                   </div>
                 ))}
                 <Button size="sm" variant="outline-secondary" onClick={handleAddOption} className="mt-2"><BsPlusLg />選択肢を追加</Button>

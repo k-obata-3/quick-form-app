@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
+import Loading from '@/app/components/Loading';
 
 type FormItem = {
   id: number;
   title: string;
   description: string;
   createdAt: string;
+  responses: any;
 };
 
 export default function DashboardPage() {
@@ -25,8 +27,7 @@ export default function DashboardPage() {
       .then((data: FormItem[]) => {
         setForms(data);
         setLoading(false);
-      });
-    console.log(session?.user)
+    });
   }, []);
 
   const totalForms = forms.length;
@@ -36,22 +37,22 @@ export default function DashboardPage() {
     return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
   }).length;
 
-  const totalResponses = totalForms * 3 + Math.floor(Math.random() * 5); // 仮の値
+  const totalResponses = forms.reduce((sum: number, f: any) => {
+    return sum + f.responses.length;
+  }, 0);
 
   const recentForms = forms.slice(0, 3);
 
-  if (loading) return <Container>読み込み中...</Container>;
+  if (loading){
+    return <Loading />
+  }
 
   return (
     <Container>
       <h2 className="mb-3">こんにちは、{userName}さん</h2>
       <div className="d-flex justify-content-end gap-2 mt-4 mb-4">
-        <Button variant="outline-secondary" onClick={() => router.push('/forms')}>
-          フォーム一覧
-        </Button>
-        <Button variant="primary" onClick={() => router.push('/forms/new')}>
-          ＋ フォームを作成
-        </Button>
+        <Button variant="outline-secondary" onClick={() => router.push('/forms')}>フォーム一覧</Button>
+        <Button variant="primary" onClick={() => router.push('/forms/new')}>フォームを作成</Button>
       </div>
 
       <Row className="mb-4">
@@ -101,26 +102,14 @@ export default function DashboardPage() {
             <Col key={form.id} md={6} lg={4} className="mb-4">
               <Card>
                 <Card.Body>
-                  <Card.Title>{form.title}</Card.Title>
-                  <Card.Text>{form.description ?? "-"}</Card.Text>
+                  <Card.Title className="text-truncate">{form.title}</Card.Title>
+                  <Card.Text className="text-truncate">{form.description ?? "-"}</Card.Text>
                   <Card.Text className="text-muted" style={{ fontSize: '0.9rem' }}>
                     作成日: {new Date(form.createdAt).toLocaleDateString()}
                   </Card.Text>
                   <div className="d-flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline-primary"
-                      onClick={() => router.push(`/forms/${form.id}/edit`)}
-                    >
-                      編集
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline-secondary"
-                      onClick={() => router.push(`/forms/${form.id}/preview`)}
-                    >
-                      プレビュー
-                    </Button>
+                    <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
+                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
                   </div>
                 </Card.Body>
               </Card>

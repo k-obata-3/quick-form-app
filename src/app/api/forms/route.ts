@@ -4,7 +4,15 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '../auth/auth';
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized', session }, { status: 401 });
+  }
+
   const forms = await prisma.form.findMany({
+    where: {
+      userId: Number(session?.user?.id),
+    },
     include: {
       questions: {
         include: {
@@ -12,6 +20,9 @@ export async function GET() {
         },
         orderBy: { position: 'asc' },
       },
+      responses: {
+        orderBy: { id: 'asc' },
+      }
     },
     orderBy: { createdAt: 'desc' },
   });

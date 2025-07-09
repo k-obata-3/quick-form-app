@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Container, Card, Form } from 'react-bootstrap';
+import Loading from '@/app/components/Loading';
 
 type Question = {
   id: number;
@@ -36,18 +37,20 @@ export default function FormPreviewPage() {
     }
   }, [id]);
 
-  if (loading || !form) return <Container>読み込み中...</Container>;
+  if (loading || !form){
+    return <Loading />
+  }
 
   return (
     <Container className="">
-      <h2 className="mb-3">{form.title}</h2>
-      <p className="text-muted">{form.description}</p>
+      <h2 className="mb-3 text-muted text-break" style={{width: "100%"}}>{form.title}</h2>
+      <p className="text-muted text-break" style={{width: "100%"}}>{form.description}</p>
       <a className="text-muted" href={`${new URL(window.location.href).origin}/public/${form.id}`} target="_blank">回答ページ</a>
       <Form>
         {form.questions.map((q) => (
           <Card key={q.id} className="my-4">
             <Card.Body>
-              <Form.Label className="fw-bold">{q.label}</Form.Label>
+              <Form.Label className="fw-bold" style={{width: "100%"}}>{q.label}</Form.Label>
 
               {q.type === 'text' && (
                 <Form.Control

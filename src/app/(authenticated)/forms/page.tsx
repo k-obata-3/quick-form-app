@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import ConfirmModal from '@/app/components/ConfirmModal';
+import Loading from '@/app/components/Loading';
 
 type FormItem = {
   id: number;
   title: string;
   description: string;
   createdAt: string;
+  responses: any;
 };
 
 export default function FormListPage() {
@@ -45,13 +47,15 @@ export default function FormListPage() {
       });
   }
 
-  if (loading) return <Container>読み込み中...</Container>;
+  if (loading){
+    return <Loading />
+  }
 
   return (
     <Container className="">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>作成したフォーム一覧</h2>
-        <Button onClick={() => router.push('/forms/new')}>＋ 新規フォーム作成</Button>
+        <Button onClick={() => router.push('/forms/new')}>新規フォーム作成</Button>
       </div>
 
       <Row>
@@ -62,11 +66,10 @@ export default function FormListPage() {
             <Col key={form.id} md={6} lg={4} className="mb-4">
               <Card>
                 <Card.Body>
-                  <Card.Title>{form.title}</Card.Title>
-                  <Card.Text>{form.description ?? "-"}</Card.Text>
-                  <Card.Text className="text-muted" style={{ fontSize: '0.9rem' }}>
-                    作成日: {new Date(form.createdAt).toLocaleDateString()}
-                  </Card.Text>
+                  <Card.Title className="text-truncate">{form.title}</Card.Title>
+                  <Card.Text className="text-truncate">{form.description ?? "-"}</Card.Text>
+                  <Card.Text className="text-muted mb-2" style={{ fontSize: '0.9rem' }}>作成日: {new Date(form.createdAt).toLocaleDateString()}</Card.Text>
+                  <Card.Text className="text-muted" style={{ fontSize: '0.9rem' }}>回答数: {form.responses.length}件</Card.Text>
                   <div className="d-flex gap-2">
                     <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
                     <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
