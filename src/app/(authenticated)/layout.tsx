@@ -32,7 +32,7 @@ export default function AuthenticatedLayout({
       <>
         <Navbar bg="dark" data-bs-theme="dark">
           <Container>
-            <NavbarBrand href="/">QuickForm</NavbarBrand>
+            <NavbarBrand>QuickForm</NavbarBrand>
             <Nav className="ms-auto">
               {/* <NavLink href="/dashboard">ダッシュボード</NavLink> */}
               {/* <NavLink href="#home">Home</NavLink> */}

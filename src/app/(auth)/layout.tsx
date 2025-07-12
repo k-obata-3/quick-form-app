@@ -7,7 +7,7 @@ export default function AuthLayout({
 }>) {
   return (
     <>
-      <Container className="d-flex flex-column align-items-center justify-content-center" style={{ maxWidth: 720 }}>
+      <Container className="d-flex flex-column align-items-center justify-content-center" style={{ maxWidth: 1080 }}>
         <img src="/logo.svg" alt="Company Logo" style={{ height: '80px' }} />
         <p className="text-muted mb-4">誰でもかんたんに、美しいフォームを作成・共有・管理</p>
 

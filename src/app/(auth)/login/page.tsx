@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <Container className="d-flex flex-column align-items-center justify-content-center" style={{ maxWidth: 720 }}>
+      <Container className="d-flex flex-column align-items-center justify-content-center" style={{ maxWidth: 1080 }}>
         <Card className="w-100 shadow-sm p-4 text-center bg-white">
           <Form onSubmit={handleLogin} className="text-start mt-4">
             {error && <Alert variant="danger">{error}</Alert>}

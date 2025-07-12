@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
         // リクエストのパスパターン
         source: "/",
         // リダイレクト先
-        destination: "/login",
+        destination: "/overview",
         // true : リダイレクトをキャッシュする（ステータスコード:308）
         // false: リダイレクトをキャッシュしない（ステータスコード:307）
         permanent: false,
