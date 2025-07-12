@@ -44,14 +44,6 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 export async function DELETE(_: Request, { params }: { params: { id: string } }) {
   const id = Number(params.id);
 
-  // 質問に紐づく選択肢削除
-  // await prisma.option.deleteMany({
-  //   where: { question: { formId: Number(id) } }
-  // });
-  // フォームに紐づく質問削除
-  // await prisma.question.deleteMany({
-  //   where: { formId: Number(id) }
-  // });
   // フォーム削除
   await prisma.form.deleteMany({
     where: { id },

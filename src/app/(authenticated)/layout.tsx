@@ -3,7 +3,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Container, Navbar, NavbarBrand, NavLink, Nav, NavItem } from 'react-bootstrap';
+import { Container, Navbar, NavbarBrand, Nav, NavItem } from 'react-bootstrap';
 import BreadcrumbsAuto from '../components/BreadcrumbsAuto';
 
 export default function AuthenticatedLayout({
@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({
 
   useEffect(() => {
     if(status !== "authenticated" && status !== "loading") {
-      router.replace('/');
+      router.replace('/login');
       return;
     }
   }, [status]);
@@ -34,9 +34,6 @@ export default function AuthenticatedLayout({
           <Container>
             <NavbarBrand>QuickForm</NavbarBrand>
             <Nav className="ms-auto">
-              {/* <NavLink href="/dashboard">ダッシュボード</NavLink> */}
-              {/* <NavLink href="#home">Home</NavLink> */}
-              {/* <NavLink href="#home">Home</NavLink> */}
               <NavItem onClick={logout} style={{color: "#fff", cursor: "pointer"}}><span>ログアウト</span></NavItem>
             </Nav>
           </Container>
