@@ -4,6 +4,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Container, Navbar, NavbarBrand, NavLink, Nav, NavItem } from 'react-bootstrap';
+import BreadcrumbsAuto from '../components/BreadcrumbsAuto';
 
 export default function AuthenticatedLayout({
   children,
@@ -14,17 +15,17 @@ export default function AuthenticatedLayout({
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if(status !== "authenticated") {
+    if(status !== "authenticated" && status !== "loading") {
       router.replace('/');
       return;
     }
-  }, []);
+  }, [status]);
 
   const logout = () => {
     if(status === "authenticated") {
-      signOut();
+      signOut({ callbackUrl: "/login" })
     }
-  };
+  }
 
   if(status === "authenticated") {
     return (
@@ -40,7 +41,11 @@ export default function AuthenticatedLayout({
             </Nav>
           </Container>
         </Navbar>
-        <Container className="py-5">
+        <Container className="py-2">
+          <BreadcrumbsAuto />
+        </Container>
+
+        <Container className="py-3">
           {children}
         </Container>
       </>

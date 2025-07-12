@@ -21,9 +21,8 @@ export default function ConfirmModal({
         <Modal.Title>削除の確認</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          <strong>{itemName}</strong> を本当に削除しますか？この操作は元に戻せません。
-        </p>
+        <p className="text-truncate"><strong>{itemName}</strong></p>
+        <p>を本当に削除しますか？この操作は元に戻せません。</p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>

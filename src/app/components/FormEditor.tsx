@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card, Form, Spinner } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
@@ -181,7 +181,9 @@ export default function FormEditor() {
       </DndContext>
 
       <div className="d-flex gap-3 mt-4">
-        <Button variant="outline-primary" onClick={addQuestion}><BsPlusLg />質問を追加</Button>
+        <div className="flex-grow-1">
+          <Button variant="outline-primary" onClick={addQuestion}><BsPlusLg />質問を追加</Button>
+        </div>
         <Button variant="primary" type="submit">保存する</Button>
       </div>
     </Form>
@@ -259,15 +261,19 @@ function SortableQuestionCard({ question, onLabelChange, onTypeChange, onOptions
             </Form.Group>
 
             {(question.type === 'radio' || question.type === 'checkbox') && (
-              <div>
-                <Form.Label hidden={!question.options?.length}>選択肢</Form.Label>
-                {(question.options || []).map((opt, i) => (
-                  <div key={i} className="d-flex gap-2 align-items-center mb-2">
-                    <Form.Control value={opt.text} onChange={(e) => handleOptionLabelChange(i, e.target.value)} placeholder="新しい選択肢" required />
-                  </div>
-                ))}
-                <Button size="sm" variant="outline-secondary" onClick={handleAddOption} className="mt-2"><BsPlusLg />選択肢を追加</Button>
-              </div>
+              <>
+                <div>
+                  <Form.Label hidden={!question.options?.length}>選択肢</Form.Label>
+                  {(question.options || []).map((opt, i) => (
+                    <div key={i} className="d-flex gap-2 align-items-center mb-2">
+                      <Form.Control value={opt.text} onChange={(e) => handleOptionLabelChange(i, e.target.value)} placeholder="新しい選択肢" required />
+                    </div>
+                  ))}
+                </div>
+                <div className="d-flex">
+                  <Button size="sm" variant="outline-secondary" onClick={handleAddOption} className="mt-2"><BsPlusLg />選択肢を追加</Button>
+                </div>
+              </>
             )}
           </div>
         </div>

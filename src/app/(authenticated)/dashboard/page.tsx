@@ -52,7 +52,7 @@ export default function DashboardPage() {
       <h2 className="mb-3">こんにちは、{userName}さん</h2>
       <div className="d-flex justify-content-end gap-2 mt-4 mb-4">
         <Button variant="outline-secondary" onClick={() => router.push('/forms')}>フォーム一覧</Button>
-        <Button variant="primary" onClick={() => router.push('/forms/new')}>フォームを作成</Button>
+        <Button variant="primary" onClick={() => router.push('/forms/new')}>新規フォーム作成</Button>
       </div>
 
       <Row className="mb-4">
@@ -107,10 +107,8 @@ export default function DashboardPage() {
                   <Card.Text className="text-muted" style={{ fontSize: '0.9rem' }}>
                     作成日: {new Date(form.createdAt).toLocaleDateString()}
                   </Card.Text>
-                  <div className="d-flex gap-2">
+                  <div className="d-flex gap-2 justify-content-end">
                     <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
-                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
-                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/results`)}>回答結果</Button>
                   </div>
                 </Card.Body>
               </Card>

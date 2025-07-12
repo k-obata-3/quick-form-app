@@ -54,7 +54,7 @@ export default function FormListPage() {
   return (
     <Container className="">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>作成したフォーム一覧</h2>
+        <h2>フォーム一覧</h2>
         <Button onClick={() => router.push('/forms/new')}>新規フォーム作成</Button>
       </div>
 
@@ -71,9 +71,12 @@ export default function FormListPage() {
                   <Card.Text className="text-muted mb-2" style={{ fontSize: '0.9rem' }}>作成日: {new Date(form.createdAt).toLocaleDateString()}</Card.Text>
                   <Card.Text className="text-muted" style={{ fontSize: '0.9rem' }}>回答数: {form.responses.length}件</Card.Text>
                   <div className="d-flex gap-2">
-                    <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
+                    <div className="flex-grow-1">
+                      <Button size="sm" variant="outline-danger" onClick={() => { setSelectedForm(form), setShowModal(true) }}>削除</Button>
+                    </div>
+                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/results`)}>回答結果</Button>
                     <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
-                    <Button size="sm" variant="outline-danger" onClick={() => { setSelectedForm(form), setShowModal(true) }}>削除</Button>
+                    <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
                   </div>
                 </Card.Body>
               </Card>
