@@ -16,9 +16,21 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     },
     include: {
       questions: {
-        include: { options: true },
+        include: {
+          options: {
+            where: {
+              isDeleted: false,
+            }
+          },
+        },
         orderBy: { position: 'asc' },
       },
+      responses: {
+        include: {
+          answers: true
+        },
+        orderBy: { submittedAt: 'asc' },
+      }
     },
   });
 

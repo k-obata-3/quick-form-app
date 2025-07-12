@@ -5090,7 +5090,7 @@ export namespace Prisma {
     id: number | null
     text: string | null
     position: number | null
-    is_deleted: boolean | null
+    isDeleted: boolean | null
     questionId: number | null
   }
 
@@ -5098,7 +5098,7 @@ export namespace Prisma {
     id: number | null
     text: string | null
     position: number | null
-    is_deleted: boolean | null
+    isDeleted: boolean | null
     questionId: number | null
   }
 
@@ -5106,7 +5106,7 @@ export namespace Prisma {
     id: number
     text: number
     position: number
-    is_deleted: number
+    isDeleted: number
     questionId: number
     _all: number
   }
@@ -5128,7 +5128,7 @@ export namespace Prisma {
     id?: true
     text?: true
     position?: true
-    is_deleted?: true
+    isDeleted?: true
     questionId?: true
   }
 
@@ -5136,7 +5136,7 @@ export namespace Prisma {
     id?: true
     text?: true
     position?: true
-    is_deleted?: true
+    isDeleted?: true
     questionId?: true
   }
 
@@ -5144,7 +5144,7 @@ export namespace Prisma {
     id?: true
     text?: true
     position?: true
-    is_deleted?: true
+    isDeleted?: true
     questionId?: true
     _all?: true
   }
@@ -5239,7 +5239,7 @@ export namespace Prisma {
     id: number
     text: string
     position: number
-    is_deleted: boolean
+    isDeleted: boolean
     questionId: number
     _count: OptionCountAggregateOutputType | null
     _avg: OptionAvgAggregateOutputType | null
@@ -5266,7 +5266,7 @@ export namespace Prisma {
     id?: boolean
     text?: boolean
     position?: boolean
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId?: boolean
     question?: boolean | QuestionDefaultArgs<ExtArgs>
     answers?: boolean | Option$answersArgs<ExtArgs>
@@ -5277,7 +5277,7 @@ export namespace Prisma {
     id?: boolean
     text?: boolean
     position?: boolean
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId?: boolean
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["option"]>
@@ -5286,7 +5286,7 @@ export namespace Prisma {
     id?: boolean
     text?: boolean
     position?: boolean
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId?: boolean
     question?: boolean | QuestionDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["option"]>
@@ -5295,11 +5295,11 @@ export namespace Prisma {
     id?: boolean
     text?: boolean
     position?: boolean
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId?: boolean
   }
 
-  export type OptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "position" | "is_deleted" | "questionId", ExtArgs["result"]["option"]>
+  export type OptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "position" | "isDeleted" | "questionId", ExtArgs["result"]["option"]>
   export type OptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     question?: boolean | QuestionDefaultArgs<ExtArgs>
     answers?: boolean | Option$answersArgs<ExtArgs>
@@ -5322,7 +5322,7 @@ export namespace Prisma {
       id: number
       text: string
       position: number
-      is_deleted: boolean
+      isDeleted: boolean
       questionId: number
     }, ExtArgs["result"]["option"]>
     composites: {}
@@ -5752,7 +5752,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Option", 'Int'>
     readonly text: FieldRef<"Option", 'String'>
     readonly position: FieldRef<"Option", 'Int'>
-    readonly is_deleted: FieldRef<"Option", 'Boolean'>
+    readonly isDeleted: FieldRef<"Option", 'Boolean'>
     readonly questionId: FieldRef<"Option", 'Int'>
   }
     
@@ -8533,7 +8533,7 @@ export namespace Prisma {
     id: 'id',
     text: 'text',
     position: 'position',
-    is_deleted: 'is_deleted',
+    isDeleted: 'isDeleted',
     questionId: 'questionId'
   };
 
@@ -8898,7 +8898,7 @@ export namespace Prisma {
     id?: IntFilter<"Option"> | number
     text?: StringFilter<"Option"> | string
     position?: IntFilter<"Option"> | number
-    is_deleted?: BoolFilter<"Option"> | boolean
+    isDeleted?: BoolFilter<"Option"> | boolean
     questionId?: IntFilter<"Option"> | number
     question?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
     answers?: AnswerListRelationFilter
@@ -8908,7 +8908,7 @@ export namespace Prisma {
     id?: SortOrder
     text?: SortOrder
     position?: SortOrder
-    is_deleted?: SortOrder
+    isDeleted?: SortOrder
     questionId?: SortOrder
     question?: QuestionOrderByWithRelationInput
     answers?: AnswerOrderByRelationAggregateInput
@@ -8921,7 +8921,7 @@ export namespace Prisma {
     NOT?: OptionWhereInput | OptionWhereInput[]
     text?: StringFilter<"Option"> | string
     position?: IntFilter<"Option"> | number
-    is_deleted?: BoolFilter<"Option"> | boolean
+    isDeleted?: BoolFilter<"Option"> | boolean
     questionId?: IntFilter<"Option"> | number
     question?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
     answers?: AnswerListRelationFilter
@@ -8931,7 +8931,7 @@ export namespace Prisma {
     id?: SortOrder
     text?: SortOrder
     position?: SortOrder
-    is_deleted?: SortOrder
+    isDeleted?: SortOrder
     questionId?: SortOrder
     _count?: OptionCountOrderByAggregateInput
     _avg?: OptionAvgOrderByAggregateInput
@@ -8947,7 +8947,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Option"> | number
     text?: StringWithAggregatesFilter<"Option"> | string
     position?: IntWithAggregatesFilter<"Option"> | number
-    is_deleted?: BoolWithAggregatesFilter<"Option"> | boolean
+    isDeleted?: BoolWithAggregatesFilter<"Option"> | boolean
     questionId?: IntWithAggregatesFilter<"Option"> | number
   }
 
@@ -9305,7 +9305,7 @@ export namespace Prisma {
   export type OptionCreateInput = {
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     question: QuestionCreateNestedOneWithoutOptionsInput
     answers?: AnswerCreateNestedManyWithoutOptionInput
   }
@@ -9314,7 +9314,7 @@ export namespace Prisma {
     id?: number
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId: number
     answers?: AnswerUncheckedCreateNestedManyWithoutOptionInput
   }
@@ -9322,7 +9322,7 @@ export namespace Prisma {
   export type OptionUpdateInput = {
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     question?: QuestionUpdateOneRequiredWithoutOptionsNestedInput
     answers?: AnswerUpdateManyWithoutOptionNestedInput
   }
@@ -9331,7 +9331,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     questionId?: IntFieldUpdateOperationsInput | number
     answers?: AnswerUncheckedUpdateManyWithoutOptionNestedInput
   }
@@ -9340,21 +9340,21 @@ export namespace Prisma {
     id?: number
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId: number
   }
 
   export type OptionUpdateManyMutationInput = {
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OptionUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     questionId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -9803,7 +9803,7 @@ export namespace Prisma {
     id?: SortOrder
     text?: SortOrder
     position?: SortOrder
-    is_deleted?: SortOrder
+    isDeleted?: SortOrder
     questionId?: SortOrder
   }
 
@@ -9817,7 +9817,7 @@ export namespace Prisma {
     id?: SortOrder
     text?: SortOrder
     position?: SortOrder
-    is_deleted?: SortOrder
+    isDeleted?: SortOrder
     questionId?: SortOrder
   }
 
@@ -9825,7 +9825,7 @@ export namespace Prisma {
     id?: SortOrder
     text?: SortOrder
     position?: SortOrder
-    is_deleted?: SortOrder
+    isDeleted?: SortOrder
     questionId?: SortOrder
   }
 
@@ -10928,7 +10928,7 @@ export namespace Prisma {
   export type OptionCreateWithoutQuestionInput = {
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     answers?: AnswerCreateNestedManyWithoutOptionInput
   }
 
@@ -10936,7 +10936,7 @@ export namespace Prisma {
     id?: number
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     answers?: AnswerUncheckedCreateNestedManyWithoutOptionInput
   }
 
@@ -11028,7 +11028,7 @@ export namespace Prisma {
     id?: IntFilter<"Option"> | number
     text?: StringFilter<"Option"> | string
     position?: IntFilter<"Option"> | number
-    is_deleted?: BoolFilter<"Option"> | boolean
+    isDeleted?: BoolFilter<"Option"> | boolean
     questionId?: IntFilter<"Option"> | number
   }
 
@@ -11362,7 +11362,7 @@ export namespace Prisma {
   export type OptionCreateWithoutAnswersInput = {
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     question: QuestionCreateNestedOneWithoutOptionsInput
   }
 
@@ -11370,7 +11370,7 @@ export namespace Prisma {
     id?: number
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
     questionId: number
   }
 
@@ -11449,7 +11449,7 @@ export namespace Prisma {
   export type OptionUpdateWithoutAnswersInput = {
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     question?: QuestionUpdateOneRequiredWithoutOptionsNestedInput
   }
 
@@ -11457,7 +11457,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     questionId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -11593,7 +11593,7 @@ export namespace Prisma {
     id?: number
     text: string
     position: number
-    is_deleted?: boolean
+    isDeleted?: boolean
   }
 
   export type AnswerCreateManyQuestionInput = {
@@ -11606,7 +11606,7 @@ export namespace Prisma {
   export type OptionUpdateWithoutQuestionInput = {
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     answers?: AnswerUpdateManyWithoutOptionNestedInput
   }
 
@@ -11614,7 +11614,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     answers?: AnswerUncheckedUpdateManyWithoutOptionNestedInput
   }
 
@@ -11622,7 +11622,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
     position?: IntFieldUpdateOperationsInput | number
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type AnswerUpdateWithoutQuestionInput = {

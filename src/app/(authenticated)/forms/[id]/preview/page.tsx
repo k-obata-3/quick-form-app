@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Container, Card, Form } from 'react-bootstrap';
+import { Container, Card, Form, Button } from 'react-bootstrap';
 import Loading from '@/app/components/Loading';
 
 type Question = {
@@ -41,11 +41,21 @@ export default function FormPreviewPage() {
     return <Loading />
   }
 
+  const openResults = () => {
+    window.open(`${new URL(window.location.href).origin}/public/${form.id}`, '_blank')
+  }
+
   return (
     <Container className="">
-      <h2 className="mb-3 text-muted text-break" style={{width: "100%"}}>{form.title}</h2>
-      <p className="text-muted text-break" style={{width: "100%"}}>{form.description}</p>
-      <a className="text-muted" href={`${new URL(window.location.href).origin}/public/${form.id}`} target="_blank">回答ページ</a>
+      <div className="d-flex justify-content-end">
+        <Button size="sm" variant="outline-secondary" onClick={openResults}>回答ページ</Button>
+      </div>
+      <Card className="my-4">
+        <Card.Body>
+          <h5 className="mb-3 text-muted text-break" style={{width: "100%"}}>{form.title}</h5>
+          <p className="text-muted text-break" style={{width: "100%"}}>{form.description}</p>
+        </Card.Body>
+      </Card>
       <Form>
         {form.questions.map((q) => (
           <Card key={q.id} className="my-4">

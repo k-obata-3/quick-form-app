@@ -11,7 +11,12 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         questions: {
           orderBy: { position: 'asc' },
           include: {
-            options: { orderBy: { position: 'asc' } },
+            options: {
+              where: {
+                isDeleted: false,
+              },
+              orderBy: { position: 'asc' }
+            },
           },
         },
       },

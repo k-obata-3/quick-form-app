@@ -155,7 +155,7 @@ exports.Prisma.OptionScalarFieldEnum = {
   id: 'id',
   text: 'text',
   position: 'position',
-  is_deleted: 'is_deleted',
+  isDeleted: 'isDeleted',
   questionId: 'questionId'
 };
 

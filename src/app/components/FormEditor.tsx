@@ -71,11 +71,13 @@ export default function FormEditor() {
     }
 
     const cleanedQuestions = questions.map((q, index) => ({
+      id: q.id,
       label: q.label.trim(),
       type: q.type,
       position: index + 1,
       options: q.type === 'text' ? [] : (q.options || []).map((opt, index) => {
         return {
+          id: opt.id,
           text: opt.text.trim(),
           position: index + 1,
         }

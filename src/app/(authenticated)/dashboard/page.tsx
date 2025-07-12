@@ -110,6 +110,7 @@ export default function DashboardPage() {
                   <div className="d-flex gap-2">
                     <Button size="sm" variant="outline-primary" onClick={() => router.push(`/forms/${form.id}/edit`)}>編集</Button>
                     <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/preview`)}>プレビュー</Button>
+                    <Button size="sm" variant="outline-secondary" onClick={() => router.push(`/forms/${form.id}/results`)}>回答結果</Button>
                   </div>
                 </Card.Body>
               </Card>
