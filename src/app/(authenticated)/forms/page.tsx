@@ -5,20 +5,13 @@ import { useRouter } from 'next/navigation';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import ConfirmModal from '@/app/components/ConfirmModal';
 import Loading from '@/app/components/Loading';
-
-type FormItem = {
-  id: number;
-  title: string;
-  description: string;
-  createdAt: string;
-  responses: any;
-};
+import { FormType } from '../../../../types/formType';
 
 export default function FormListPage() {
   const router = useRouter();
-  const [forms, setForms] = useState<FormItem[]>([]);
+  const [forms, setForms] = useState<FormType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedForm, setSelectedForm] = useState<FormItem | null>(null);
+  const [selectedForm, setSelectedForm] = useState<FormType | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {

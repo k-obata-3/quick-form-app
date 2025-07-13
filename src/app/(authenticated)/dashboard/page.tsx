@@ -5,26 +5,19 @@ import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/components/Loading';
-
-type FormItem = {
-  id: number;
-  title: string;
-  description: string;
-  createdAt: string;
-  responses: any;
-};
+import { FormType } from '../../../../types/formType';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const userName = session?.user?.userName || 'ユーザー';
-  const [forms, setForms] = useState<FormItem[]>([]);
+  const [forms, setForms] = useState<FormType[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     fetch('/api/forms')
       .then((res) => res.json())
-      .then((data: FormItem[]) => {
+      .then((data: FormType[]) => {
         setForms(data);
         setLoading(false);
     });
