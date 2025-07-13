@@ -4,16 +4,8 @@ export type FormType = {
   description: string;
   isPublic: boolean;
   createdAt: string;
-  questions: {
-    id: number;
-    label: string;
-    type: 'text' | 'radio' | 'checkbox';
-    options?: {
-      id: number;
-      text: string;
-    }[];
-  }[];
-  responses: {
+  questions: Question[];
+  responses?: {
     id: number;
     submittedAt: string;
     answers: {
@@ -24,4 +16,22 @@ export type FormType = {
       text: string;
     }[];
   }[]
+}
+
+export type Question = {
+  id: number;
+  label: string;
+  type: 'text' | 'radio' | 'checkbox';
+  position?: number;
+  formId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  options?: Option[];
+}
+
+export type Option = {
+  id: number;
+  text: string;
+  position: number;
+  questionId: number;
 }

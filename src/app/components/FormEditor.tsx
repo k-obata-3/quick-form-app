@@ -9,19 +9,7 @@ import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 import { BsFillGrid3X2GapFill, BsPlusLg } from "react-icons/bs";
 import Loading from './Loading';
-export type Question = {
-  id: number;
-  label: string;
-  type: 'text' | 'radio' | 'checkbox';
-  options?: Option[],
-};
-
-export type Option = {
-  id: number,
-  position: number,
-  questionId: number,
-  text: string,
-};
+import { Option, Question } from '../../../types/formType';
 
 export default function FormEditor() {
   const { id } = useParams();
@@ -116,8 +104,9 @@ export default function FormEditor() {
   };
 
   const addQuestion = () => {
+    const dateNow = new Date();
     const newQuestion: Question = {
-      id: Date.now(),
+      id: Number(`${dateNow.getHours()}${dateNow.getMinutes()}${dateNow.getSeconds()}${dateNow.getMilliseconds()}`),
       label: "",
       type: 'text',
       options: [],

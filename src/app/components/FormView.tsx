@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 
 type FormType = {
