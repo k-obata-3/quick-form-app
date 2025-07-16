@@ -17,7 +17,6 @@ npx prisma init
 ## react-bootstrap install
 ```
 npm install --save bootstrap @types/bootstrap
-npm install --save node-sass @types/node-sass
 npm install react-bootstrap @types/react-bootstrap
 ```
 
