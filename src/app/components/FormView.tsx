@@ -28,13 +28,13 @@ export default function FormView({preview, form}: Prop) {
     setValues((prev) => ({ ...prev, [key]: item }))
   };
 
-  const handleSelectChange = (e: any, type: string, questionId: number) => {
+  const handleSelectChange = (e: any, questionId: number) => {
     const optionId = e.target.selectedOptions[0].id
     const key: string = `${questionId}`;
     const item: Answer = {
       questionId: questionId,
-      optionId: e.target.checked ? optionId : null,
-      value: e.target.value,
+      optionId: optionId ? Number(optionId) : null,
+      value: optionId ? e.target.value : null,
     }
 
     setValues((prev) => ({ ...prev, [key]: item }))
@@ -144,7 +144,8 @@ export default function FormView({preview, form}: Prop) {
                     </>
                   )}
                   {!preview && (
-                    <Form.Select onChange={(e) => handleSelectChange(e, q.type, q.id)}>
+                    <Form.Select onChange={(e) => handleSelectChange(e, q.id)}>
+                      <option id={undefined} value={undefined}>未選択</option>
                       {
                         q.options?.map((opt) => (
                           <option key={opt.id} id={opt.id.toString()} value={opt.text}>{opt.text}</option>
