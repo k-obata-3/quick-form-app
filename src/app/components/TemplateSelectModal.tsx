@@ -1,8 +1,10 @@
 'use client';
 
-import { Modal, Button, ListGroup } from 'react-bootstrap';
+import { Modal, Button, ListGroup, Row, Col } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Template } from '../../../types/formType';
+import Loading from './Loading';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
 
 type TemplateSelectModalProps = {
   show: boolean;
@@ -17,6 +19,7 @@ export default function TemplateSelectModal({
 }: TemplateSelectModalProps) {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (show) {
@@ -25,6 +28,9 @@ export default function TemplateSelectModal({
       fetch('/api/templates')
         .then(res => res.json())
         .then(setTemplates)
+        .then(() => setLoading(false))
+    } else {
+      setLoading(true);
     }
   }, [show])
 
@@ -35,24 +41,30 @@ export default function TemplateSelectModal({
     }
   };
 
-  return (
+  return (!loading &&
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>テンプレートを選択</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <ListGroup>
-          {templates.map((tpl) => (
-            <ListGroup.Item
-              key={tpl.id}
-              active={selectedTemplate?.id === tpl.id}
-              action
-              onClick={() => setSelectedTemplate(tpl)}
-            >
-              <div className="fw-bold">{tpl.title}</div>
-              <small className="text-muted">{tpl.description}</small>
-            </ListGroup.Item>
-          ))}
+          {templates.length === 0 ? (
+            <p className="text-center m-0">未登録</p>
+          ) : (
+            templates.map((tpl) => (
+              <ListGroup.Item key={tpl.id} onClick={() => setSelectedTemplate(tpl)} action>
+                <Row>
+                  <Col xs={1} className="m-auto">
+                    <BsFillCheckCircleFill style={{opacity: selectedTemplate?.id === tpl.id ? "1" : "0"}} />
+                  </Col>
+                  <Col xs={11}>
+                    <div className="fw-bold text-truncate">{tpl.title}</div>
+                    <p className="m-0 text-truncate"><small>{tpl.description ?? "-"}</small></p>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            ))
+          )}
         </ListGroup>
       </Modal.Body>
       <Modal.Footer>
