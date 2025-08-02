@@ -8,7 +8,7 @@ interface Token extends JWT {
   id?: string,
   userName?: string,
   role?: string,
-  isAdmin: boolean,
+  isAdmin?: boolean,
 }
 
 export const authOptions = {
