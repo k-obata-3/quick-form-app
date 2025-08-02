@@ -1,5 +1,7 @@
 'use client';
 
+import MasterQuestionTab from '@/app/components/admin/MasterQuestionTab';
+import TemplateTab from '@/app/components/admin/TemplateTab';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -22,10 +24,10 @@ export default function AdminPage() {
       <div className="mt-4">
         <Tabs activeKey={key} onSelect={(k) => setKey(k || 'questions')} className="mb-3">
           <Tab eventKey="questions" title="マスタ質問">
-
+            <MasterQuestionTab />
           </Tab>
           <Tab eventKey="templates" title="テンプレート">
-
+            <TemplateTab />
           </Tab>
         </Tabs>
       </div>
